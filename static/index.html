@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sonar Segmentation</title>
+<style>
+:root{--bg:#0d1520;--panel:#162231;--ink:#e8eef4;--muted:#9fb0c0;--line:#2a3a4c;--accent:#e9b44c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
+main{max-width:960px;margin:auto;padding:40px 16px}h1{margin:0;font-size:30px}p{color:var(--muted);margin:6px 0 20px}
+.bar{display:flex;flex-wrap:wrap;gap:16px;align-items:end;background:var(--panel);padding:16px;border-radius:8px}
+label{font-size:14px;color:var(--muted);display:block}input[type=range]{display:block;width:210px}
+button{background:var(--accent);border:0;border-radius:6px;padding:10px 16px;font:inherit;font-weight:650;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}figure{margin:0}figcaption{font-size:14px;color:var(--muted);margin-bottom:6px}
+img{width:100%;display:block;image-rendering:pixelated;border-radius:4px}#stats{margin-top:16px;color:var(--muted)}#stats b{color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:14px;color:var(--muted)}.legend i{display:inline-block;width:12px;height:12px;margin-right:5px;border-radius:2px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+</style></head>
+<body><main>
+<h1>Side-scan sonar segmentation</h1>
+<p>Every image here is simulated. Change the speckle noise and compare the model against the known labels.</p>
+<div class="bar"><label>Noise: <span id="nv"></span> looks (lower is noisier)<input id="n" type="range" min="1" max="16" step="1" value="4"></label>
+<button id="go">New swath</button></div>
+<div class="grid"><figure><figcaption>Simulated input</figcaption><img id="a" alt="Simulated sonar image"></figure>
+<figure><figcaption>Model prediction</figcaption><img id="b" alt="Predicted seabed classes"></figure>
+<figure><figcaption>True labels</figcaption><img id="c" alt="True seabed classes"></figure></div>
+<div class="legend" id="k"></div><div id="stats" role="status"></div>
+</main><script>
+const $=i=>document.getElementById(i);let seed=200000;
+async function load(){const n=$('n').value;$('nv').textContent=n;
+ const r=await fetch(`/v1/simulate?seed=${seed}&speckle_looks=${n}`);const d=await r.json();
+ if(!r.ok){$('stats').textContent=d.detail;return}
+ $('a').src='data:image/png;base64,'+d.input_png;$('b').src='data:image/png;base64,'+d.prediction_png;$('c').src='data:image/png;base64,'+d.truth_png;
+ $('stats').innerHTML=`Mean IoU on this swath: <b>${d.miou.toFixed(3)}</b> &middot; seed ${d.seed}`}
+$('go').onclick=()=>{seed=Math.floor(200300+Math.random()*1e6);load()};$('n').oninput=load;
+fetch('/v1/classes').then(r=>r.json()).then(c=>{$('k').innerHTML=c.map(x=>`<span><i style="background:${x.color}"></i>${x.name.replace('_',' ')}</span>`).join('')});
+load();
+</script></body></html>
