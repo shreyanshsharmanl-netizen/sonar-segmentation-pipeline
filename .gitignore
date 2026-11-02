@@ -10,3 +10,4 @@ mlflow.db
 node_modules/
 frontend/dist/
 .env
+.coverage
