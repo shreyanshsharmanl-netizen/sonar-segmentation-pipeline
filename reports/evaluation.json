@@ -1,0 +1,39 @@
+{
+  "data": "synthetic (src/sonarseg/simulate.py)",
+  "test_images": 300,
+  "unet_miou": 0.9526,
+  "baseline_miou": 0.3915,
+  "per_class_iou": {
+    "water_column": {
+      "unet": 0.9976,
+      "baseline": 0.8389
+    },
+    "sand": {
+      "unet": 0.9399,
+      "baseline": 0.6078
+    },
+    "rock": {
+      "unet": 0.9823,
+      "baseline": 0.4293
+    },
+    "mud": {
+      "unet": 0.9856,
+      "baseline": 0.4601
+    },
+    "object": {
+      "unet": 0.8404,
+      "baseline": 0.0092
+    },
+    "shadow": {
+      "unet": 0.97,
+      "baseline": 0.0039
+    }
+  },
+  "miou_by_speckle_looks": {
+    "8.0": 0.963,
+    "4.0": 0.9526,
+    "2.0": 0.8839,
+    "1.0": 0.5227
+  },
+  "cpu_ms_per_image": 24.0
+}
