@@ -1,8 +1,6 @@
 # Side-scan sonar segmentation pipeline
 
-![CI](https://github.com/YOUR_USERNAME/sonar-segmentation-pipeline/actions/workflows/ci.yml/badge.svg)
-
-**[Live demo](https://YOUR_DEMO_URL)**
+![CI](https://github.com/shreyanshsharmanl-netizen/sonar-segmentation-pipeline/actions/workflows/ci.yml/badge.svg)
 
 A repeatable pipeline that simulates sonar imagery, trains a U-Net, tracks experiments in MLflow, and only releases a model that passes a quality gate.
 
