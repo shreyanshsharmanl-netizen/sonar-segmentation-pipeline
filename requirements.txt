@@ -4,4 +4,4 @@ python-multipart==0.0.32
 numpy==2.5.3
 pillow==12.3.0
 scipy==1.18.1
-torch==2.15.0
+torch==2.15.0+cpu
